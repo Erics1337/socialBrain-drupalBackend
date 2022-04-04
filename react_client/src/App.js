@@ -1,17 +1,25 @@
-import logo from './logo.svg'
-import './App.css'
-import NodeReadWrite from './components/NodeReadWrite'
-import LoginForm from './components/LoginForm'
-import NodeListOnly from './components/NodeListOnly'
+import './styles/loaders.css'
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
+import { AuthProvider, RequireAuth } from './context/AuthContext'
 
-function App() {
+export default function App() {
 	return (
-		<>
-			<LoginForm />
-			{/* <NodeReadWrite /> */}
-			<NodeListOnly />
-		</>
+		<AuthProvider>
+			<Routes>
+				<Route
+					path='/'
+					element={
+						<RequireAuth>
+							<Home />
+						</RequireAuth>
+					}
+				/>
+				<Route path='signup' element={<Signup />} />
+				<Route path='login' element={<Login />} />
+			</Routes>
+		</AuthProvider>
 	)
 }
-
-export default App
