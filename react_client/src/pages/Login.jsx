@@ -1,14 +1,12 @@
 import { useState, useContext, useEffect } from 'react'
 import * as Yup from 'yup'
 import { Formik, Field, Form } from 'formik'
-import Logo from '../assets/images/logo.png'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import Loader from '../components/Loader'
 
 function Login() {
 	const navigate = useNavigate()
-
 	const {
 		currentUser,
 		isLoggedIn,
@@ -19,7 +17,7 @@ function Login() {
 	} = useContext(AuthContext)
 
 	useEffect(() => {
-		checkLoggedIn() && navigate('/')
+		checkLoggedIn(true, '/')
 	}, [])
 
 	// Login Form Validation Schema
@@ -46,7 +44,13 @@ function Login() {
 			<div className='h-screen bg-gray-50 flex flex-col justify-center items-center dark:bg-gray-700'>
 				<div className='bg-white border border-gray-300 w-80 py-8 flex items-center flex-col mb-3 dark:bg-gray-200'>
 					<a className='cursor-pointer' href='/'>
-						<img src={Logo} alt='Logo' />
+						<img
+							src={
+								process.env.PUBLIC_URL +
+								'/assets/images/logo.png'
+							}
+							alt='Logo'
+						/>
 					</a>
 					<Formik
 						initialValues={{
@@ -98,12 +102,12 @@ function Login() {
 				</div>
 				<div className='bg-white border border-gray-300 text-center w-80 py-4 dark:bg-gray-200'>
 					<span className='text-sm'>Need an account?</span>
-					<Link
-						to='/signup'
+					<div
+						onClick={() => navigate('/signup')}
 						className='text-blue-500 text-sm font-semibold'>
 						{' '}
 						Sign Up
-					</Link>
+					</div>
 				</div>
 				{/* <div className='mt-3 text-center dark:text-gray-200'>
 					<span className='text-xs'>Get the app</span>

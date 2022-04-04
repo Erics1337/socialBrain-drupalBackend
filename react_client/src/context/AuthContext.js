@@ -8,9 +8,11 @@ const authClient = getAuthClient()
 const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
+	const navigate = useNavigate()
+
 	const initialState = {
 		isLoggedIn: false,
-		isLoading: false,
+		isLoading: true,
 		currentUser: {},
 	}
 	/* Reducer */
@@ -28,7 +30,7 @@ export const AuthProvider = ({ children }) => {
 				)
 				return {
 					...state,
-					isLoggedIn: true,
+					isLoggedIn: action.payload,
 				}
 			case 'SET_CURRENT_USER':
 				return {
@@ -51,6 +53,7 @@ export const AuthProvider = ({ children }) => {
 		dispatch({ type: 'SET_LOADING', payload: true })
 		try {
 			await authClient.login(username, password)
+			navigate('/')
 			dispatch({
 				type: 'SET_IS_LOGGED_IN',
 				payload: await authClient.isLoggedIn(),
@@ -62,24 +65,41 @@ export const AuthProvider = ({ children }) => {
 	}
 
 	const signout = async () => {
-		dispatch({ type: 'SET_LOADING', payload: true })
-		dispatch({
-			type: 'SET_IS_LOGGED_IN',
-			payload: await authClient.logout(),
-		})
-	}
-
-	const checkLoggedIn = async () => {
-		dispatch({ type: 'SET_LOADING', payload: true })
 		try {
-			const response = await authClient.isLoggedIn()
-			console.log('checkLoggedIn response', response)
+			dispatch({ type: 'SET_LOADING', payload: true })
+			await authClient.logout()
 			dispatch({
 				type: 'SET_IS_LOGGED_IN',
-				payload: response,
+				payload: false,
 			})
-			dispatch({ type: 'SET_LOADING', payload: false })
-			return response
+		} catch (error) {
+			console.log('error', error)
+		}
+		dispatch({ type: 'SET_LOADING', payload: false })
+	}
+
+	const checkLoggedIn = async (loggedIn, navigateTo) => {
+		dispatch({ type: 'SET_LOADING', payload: true })
+		try {
+			authClient
+				.isLoggedIn()
+				.then((response) => {
+					console.log('checkLoggedIn response', response)
+					response === loggedIn && navigate(`${navigateTo}`)
+					dispatch({
+						type: 'SET_IS_LOGGED_IN',
+						payload: response,
+					})
+					dispatch({ type: 'SET_LOADING', payload: false })
+				})
+				.catch(() => {
+					console.log('checkLoggedIn error')
+					dispatch({
+						type: 'SET_IS_LOGGED_IN',
+						payload: false,
+					})
+					dispatch({ type: 'SET_LOADING', payload: false })
+				})
 		} catch (error) {
 			console.log('error', error)
 			dispatch({ type: 'SET_LOADING', payload: false })
@@ -92,21 +112,6 @@ export const AuthProvider = ({ children }) => {
 			{children}
 		</AuthContext.Provider>
 	)
-}
-
-function useAuth() {
-	return useContext(AuthContext)
-}
-
-export const RequireAuth = ({ children }) => {
-	// Use this context
-	let auth = useAuth()
-
-	const navigate = useNavigate()
-
-	!auth.checkLoggedIn && navigate('/login')
-
-	return children
 }
 
 export default AuthContext

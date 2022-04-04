@@ -1,3 +1,50 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom utility classes */
+@layer components {
+	.navBtn {
+		@apply hidden h-6 md:inline-flex cursor-pointer hover:scale-125 transition-all duration-150 ease-out;
+	}
+
+	.btn {
+		@apply h-7 hover:scale-125 cursor-pointer transition-all duration-150 ease-out;
+	}
+}
+
+/* --------------------------- Signin/Login logos --------------------------- */
+.facebook-logo {
+	background-position: -414px -259px;
+	background-image: url(https://bit.ly/3v2LT17);
+	height: 16px;
+	width: 16px;
+}
+.apple-store-logo {
+	background-position: -132px -182px;
+	height: 42px;
+	width: 128px;
+	background-image: url(https://bit.ly/3v2LT17);
+}
+.google-store-logo {
+	background-position: 0 -182px;
+	height: 42px;
+	width: 130px;
+	background-image: url(https://bit.ly/3v2LT17);
+}
+
+/* ------------------------------ Profile Page ------------------------------ */
+.pb-full {
+	padding-bottom: 100%;
+}
+
+/* hide search icon on search focus */
+.search-bar:focus + .fa-search {
+	display: none;
+}
+
+@media screen and (min-width: 768px) {
+	.post:hover .overlay {
+		display: block;
+	}
+}
