@@ -1,37 +1,34 @@
-# React App with Drupal Backend
-Resources:
+# React App with Drupal and Django
+- This is an exploration into the React/Django/Drupal stack.
+- Uses websockets for real time chat
+## Getting Started with Drupal
+1. Point your MAMP server to the web directory
+2. Create new MySQL database
+3. Visit drupal site and install database
 
-[Drupalize.me create fully decoupled react app](https://drupalize.me/tutorial/create-fully-decoupled-react-application?p=3253)
-[What Is JWT and Why Should You Use JWT](https://www.youtube.com/watch?v=7Q17ubqLfaM)
-[OAuth 2.0](https://youtu.be/CPbvxxslDTU)
+## Getting Started with Express
+```
+cd django_server
+```
+Prepare the virtual environment:
+```
+python3 -m venv env
+```
+Activate the virtual environment:
+```
+source env/bin/activate
+```
+Install Django and pin the dependencies:
+```
+pip install channels
+python -m pip install django
+python -m pip freeze > requirements.txt
+```
 
-Uses [Simple OAuth module]('https://www.drupal.org/project/simple_oauth') to decouple drupal for use as a backend to authenticate users 
 
-## CORS
-CORS policy needs to be correctly configured for both the host and the client.
+## Getting Started with React
 ```
-# enable CORS
-Header add Access-Control-Allow-Origin: "*"
-Header add Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
-Header add Access-Control-Allow-Headers: "Content-Type"
+cd react_client
+npm install
 ```
 
-Added the following to the .htaccess file under the domain root of the CMS:
-```
-parameters:
-  cors.config:
-    enabled: false
-    # Specify allowed headers, like 'x-allowed-header'.
-    allowedHeaders: ['x-csrf-token','authorization','content-type','accept','origin','x-requested-with', '*']
-    # Specify allowed request methods, specify ['*'] to allow all possible ones.
-    allowedMethods: ['*']
-    # Configure requests allowed from specific origins.
-    allowedOrigins: ['*']
-    # Sets the Access-Control-Expose-Headers header.
-    exposedHeaders: true
-    # Sets the Access-Control-Max-Age header.
-    maxAge: 1000
-    # Sets the Access-Control-Allow-Credentials header.
-    supportsCredentials: false
-```
-Under the /sites/default directory, added a settings.yml file with the following:

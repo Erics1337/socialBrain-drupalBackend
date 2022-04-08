@@ -5,6 +5,12 @@ react_client/node_modules
 /.pnp
 .pnp.js
 
+# python
+django_server/env
+django_server/setup/__pycache__
+django_server/chat/__pycache__
+django_server/api/__pycache__
+
 # testing
 /coverage
 
